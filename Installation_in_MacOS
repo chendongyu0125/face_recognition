@@ -1,0 +1,65 @@
+我在MacOS上安装face_recognition真让我生不如死，把踩过的坑记录下来，下次再安装的时候别犯同样的错误。
+
+(1)安装cmake及boost，opencv
+安装face_recognition需要有dlib以及boost，如果要在视频中提取头像，还需要安装opencv。
+dlib是一个用c++写的开源程序，需要自己编译，这就要用到cmake工具以及编译器cc以及c++
+安装cmake：
+$ brew install cmake
+或者
+$ conda install cmake
+安装boost
+$ brew install boost
+$ brew install opencv
+或者
+$ pip3 install boost
+$ pip3 install opencv
+或者
+$ conda install boost
+$ conda install opencv
+
+(2)安装xcode及设置c和c++
+千万不要使用GNU的c及c++编译器。重要的事情说三遍！！！我就是死在这里了，每次编译dlib都报错。
+在编译时，程序会自动检测系统所带的编译工具，例如我的电脑上检测到的工具如下：
+-- Using CMake version: 3.13.2
+-- The C compiler identification is GNU 4.8.5
+-- The CXX compiler identification is GNU 4.8.5
+然后就悲剧了，编译的时候报一大堆错误。
+正确的做法是用Xcode下的c及c++编译器，好像是clang。
+为此需要安装Xcode或者XcodeCommandLine。前者是个大约6G多的开发工具，直接在appStore中下载。建议安装前者。
+下载安装完毕之后，在系统中会有这两个文件：
+Mac⁩ ▸ ⁨资源库⁩ ▸ ⁨Developer⁩ ▸ ⁨CommandLineTools⁩ ▸ ⁨usr⁩ ▸ ⁨bin⁩/cc
+Mac⁩ ▸ ⁨资源库⁩ ▸ ⁨Developer⁩ ▸ ⁨CommandLineTools⁩ ▸ ⁨usr⁩ ▸ ⁨bin⁩/c++
+需要用这两个来进行编译！！
+而在我之前的编译过程中，编译c的工具（gcc）以及c++工具（g++）则来自GNU 4.8.5，所以出错
+$ which gcc
+  /Users/xxx/anaconda/bin/gcc
+$ which g++
+  /Users/xxx/anaconda/bin/g++
+$ which cc
+/Users/xxx/anaconda/bin/cc
+$ which c++
+  /Users/xxx/anaconda/bin/c++
+我的做法是直接将anaconda/bin下的这几个文件删除
+$ rm /Users/xxx/anaconda/bin/gcc
+$ rm /Users/xxx/anaconda/bin/g++
+$ rm /Users/xxx/anaconda/bin/cc
+$ rm /Users/xxx/anaconda/bin/c++
+然后将系统中的cc及c++链接过来（软连接）
+ln -s /Library/Developer/CommandLineTools/usr/bin/cc /Users/xxx/anaconda/bin/cc
+ln -s /Library/Developer/CommandLineTools/usr/bin/gcc /Users/xxx/anaconda/bin/gcc
+ln -s /Library/Developer/CommandLineTools/usr/bin/c++ /Users/xxx/anaconda/bin/c++
+ln -s /Library/Developer/CommandLineTools/usr/bin/g++ /Users/xxx/anaconda/bin/g++
+
+(3)下载安装dlib
+$ git clone https://github.com/davisking/dlib.git
+$ cd dlib
+$ python3 setup.py install
+
+(4)安装face_recognition
+安装face_recognition
+$ pip3 install face_recognition
+或者
+$ conda install face_recognition
+
+其它问题不大，关键是dlib的编译，切记选对编译器。
+
