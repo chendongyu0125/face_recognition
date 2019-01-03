@@ -1,4 +1,4 @@
-我在MacOS上安装face_recognition真让我生不如死，把踩过的坑记录下来，下次再安装的时候别犯同样的错误。
+我在MacOS上安装face_recognition，把踩过的坑记录下来，下次再安装的时候别犯同样的错误。
 
 (1)安装cmake及boost，opencv
 安装face_recognition需要有dlib以及boost，如果要在视频中提取头像，还需要安装opencv。
